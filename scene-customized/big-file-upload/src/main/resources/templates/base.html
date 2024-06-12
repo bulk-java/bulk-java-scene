@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="base">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script th:src="@{/plugins/vue.js}" type="text/javascript"></script>
+    <script th:src="@{/plugins/element/element-ui.js}" type="text/javascript"></script>
+    <link th:href="@{/plugins/element/css/element-ui.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/plugins/axios.js}" type="text/javascript"></script>
+    <script th:src="@{/plugins/vue-uploader.js}" type="text/javascript"></script>
+    <script th:src="@{/plugins/spark-md5.min.js}" type="text/javascript"></script>
+    <script th:src="@{/plugins/element/zh-CN.js}"></script>
+    <script type="text/javascript">
+        ELEMENT.locale(ELEMENT.lang.zhCN)
+        // 添加响应拦截器
+        axios.interceptors.response.use(response => {
+            if (response.request.responseType === 'blob') {
+                return response
+            }
+            // 对响应数据做点什么
+            const res = response.data
+            if (!!res && res.code === 1) { // 公共处理失败请求
+                ELEMENT.Message({message: "异常:" + res.msg, type: "error"})
+                return Promise.reject(new Error(res.msg || 'Error'));
+            } else {
+                return res
+            }
+        }, function (error) {
+            // 对响应错误做点什么
+            return Promise.reject(error);
+        });
+    </script>
+</head>
+
+</html>

@@ -1,0 +1,84 @@
+
+.uploader-example {
+    width: 880px;
+    padding: 15px;
+    margin: 40px auto 0;
+    font-size: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.uploader-example .uploader-btn {
+    margin-right: 4px;
+}
+.uploader-example .uploader-list {
+    max-height: 440px;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#global-uploader {
+    position: fixed;
+    z-index: 20;
+    right: 15px;
+    bottom: 15px;
+    width: 550px;
+}
+
+.uploader-file {
+    height: 90px;
+}
+
+.uploader-file-meta {
+    display: none !important;
+}
+
+.operate {
+    flex: 1;
+    text-align: right;
+}
+
+.file-list {
+    position: relative;
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 0px;
+    margin: 0 auto;
+    transition: all 0.5s;
+}
+
+.uploader-file-size {
+    width: 15% !important;
+}
+
+.uploader-file-status {
+    width: 32.5% !important;
+    text-align: center !important;
+}
+
+li {
+    background-color: #fff;
+    list-style-type: none;
+}
+
+.no-file {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}
+
+.uploader-file-name {
+    width: 36% !important;
+}
+
+.uploader-file-actions {
+    float: right !important;
+}
+
+
+/deep/ .el-progress-bar {
+    width: 95%;
+}

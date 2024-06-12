@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: big-file-upload
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_URL:127.0.0.1}:3306/big-file?autoReconnect=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true
+    username: root
+    password: ${MYSQL_PASSWORD:abc123}
+    hikari:
+      max-lifetime: 500000
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+# 文件相关参数
+file:
+  path: D:\tmp\file
+  # 20 * 1024 * 1024
+  chunk-size: 20971520

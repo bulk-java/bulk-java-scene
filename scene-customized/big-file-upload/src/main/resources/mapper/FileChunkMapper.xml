@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.bulk.big.mapper.FileChunkMapper">
+
+    <resultMap type="top.bulk.big.entity.FileChunk" id="FileChunkMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+        <result property="chunkNumber" column="chunk_number" jdbcType="INTEGER"/>
+        <result property="chunkSize" column="chunk_size" jdbcType="INTEGER"/>
+        <result property="currentChunkSize" column="current_chunk_size" jdbcType="INTEGER"/>
+        <result property="totalSize" column="total_size" jdbcType="INTEGER"/>
+        <result property="totalChunk" column="total_chunk" jdbcType="INTEGER"/>
+        <result property="identifier" column="identifier" jdbcType="VARCHAR"/>
+        <result property="relativePath" column="relative_path" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into file_chunk(file_name, chunk_number, chunk_size, current_chunk_size, total_size, total_chunk, identifier, relative_path, create_by, create_time, update_by, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.fileName}, #{entity.chunkNumber}, #{entity.chunkSize}, #{entity.currentChunkSize}, #{entity.totalSize}, #{entity.totalChunk}, #{entity.identifier}, #{entity.relativePath}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into file_chunk(file_name, chunk_number, chunk_size, current_chunk_size, total_size, total_chunk, identifier, relative_path, create_by, create_time, update_by, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.fileName}, #{entity.chunkNumber}, #{entity.chunkSize}, #{entity.currentChunkSize}, #{entity.totalSize}, #{entity.totalChunk}, #{entity.identifier}, #{entity.relativePath}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+         file_name = values(file_name) , chunk_number = values(chunk_number) , chunk_size = values(chunk_size) , current_chunk_size = values(current_chunk_size) , total_size = values(total_size) , total_chunk = values(total_chunk) , identifier = values(identifier) , relative_path = values(relative_path) , createTime = values(createTime) , updateTime = values(updateTime)     </insert>
+
+</mapper>
+
