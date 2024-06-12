@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>top.bulk</groupId>
+    <artifactId>bulk-java-scene</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>bulk-java-scene</name>
+    <modules>
+        <module>scene-general</module>
+        <module>scene-customized</module>
+        <module>design-patterns</module>
+        <module>java8-use</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <description>
+        所有项目合集
+        每一个模块都是单独的一个项目
+        为了确保加载速度，使用时候请打开对应模块的注释
+    </description>
+
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <!-- 是否开启发布版构件下载 -->
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!-- 是否开启快照版构件下载 -->
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>
