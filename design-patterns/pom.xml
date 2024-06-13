@@ -8,7 +8,7 @@
         <artifactId>bulk-java-scene</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
+    <packaging>pom</packaging>
     <artifactId>design-patterns</artifactId>
     <description>本模块会记录一些和设计模式相关的示例</description>
     <properties>
