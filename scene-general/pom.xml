@@ -8,6 +8,7 @@
         <artifactId>bulk-java-scene</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <packaging>pom</packaging>
 
     <artifactId>scene-general</artifactId>
 
@@ -19,4 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <modules>
+        <module>idempotent-case</module>
+    </modules>
 </project>
