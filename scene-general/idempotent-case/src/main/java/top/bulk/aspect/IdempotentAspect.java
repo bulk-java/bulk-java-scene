@@ -18,10 +18,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import top.bulk.annotation.Idempotent;
 import top.bulk.exception.IdempotentException;
 import top.bulk.expression.ExpressionResolver;
+import top.bulk.handler.IdempotentHandler;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,25 +40,28 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class IdempotentAspect {
-
+    /**
+     * 借助 ThreadLocal ，实现 删除能力
+     */
     private static final ThreadLocal<Map<String, Object>> THREAD_CACHE = ThreadLocal.withInitial(HashMap::new);
-
-    private static final String REDIS_MAP_CACHE_KEY = "idempotent";
 
     private static final String KEY = "key";
 
     private static final String DEL_KEY = "delKey";
 
     @Autowired
-    private RedissonClient redissonClient;
-
-    @Autowired
     private ExpressionResolver expressionResolver;
+
+    @Resource
+    IdempotentHandler idempotentHandler;
 
     @Pointcut("@annotation(top.bulk.annotation.Idempotent)")
     public void pointCut() {
     }
 
+    /**
+     * 前置处理，进行幂等的控制
+     */
     @Before("pointCut()")
     public void beforePointCut(JoinPoint joinPoint) {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
@@ -63,53 +69,58 @@ public class IdempotentAspect {
         assert requestAttributes != null;
         HttpServletRequest request = requestAttributes.getRequest();
 
+        // 获取 @Idempotent 注解
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        if (!method.isAnnotationPresent(Idempotent.class)) {
-            return;
-        }
         Idempotent idempotent = method.getAnnotation(Idempotent.class);
 
-        String key = getKey(joinPoint, request, idempotent);
+        // 获取用于幂等校验的key
+        String key = this.getKey(joinPoint, request, idempotent);
 
         long expireTime = idempotent.expireTime();
         String info = idempotent.info();
         TimeUnit timeUnit = idempotent.timeUnit();
         boolean delKey = idempotent.delKey();
 
-        // do not need check null
-        RMapCache<String, Object> rMapCache = redissonClient.getMapCache(REDIS_MAP_CACHE_KEY);
-        String value = LocalDateTime.now().toString().replace("T", " ");
-        Object v1;
-        if (null != rMapCache.get(key)) {
-            // had stored
+        // 如果不满足幂等校验，则直接抛出异常
+        if (!idempotentHandler.isIdempotent(key, expireTime, timeUnit)) {
             throw new IdempotentException(info);
         }
-        synchronized (this) {
-            v1 = rMapCache.putIfAbsent(key, value, expireTime, timeUnit);
-            if (null != v1) {
-                throw new IdempotentException(info);
-            } else {
-                log.info("[idempotent]:has stored key={},value={},expireTime={}{},now={}", key, value, expireTime,
-                        timeUnit, LocalDateTime.now());
-            }
-        }
 
+
+        // 暂存key，如果需要删除的话，在 后置处理 中执行
         Map<String, Object> map = THREAD_CACHE.get();
         map.put(KEY, key);
         map.put(DEL_KEY, delKey);
     }
 
     /**
-     * 获取 redis 存储的 key
+     * 后置处理，对于那些需要删除 key 的场景，进行 key 值的删除
+     */
+    @After("pointCut()")
+    public void afterPointCut(JoinPoint joinPoint) {
+        Map<String, Object> map = THREAD_CACHE.get();
+        if (CollectionUtils.isEmpty(map)) {
+            return;
+        }
+        String key = map.get(KEY).toString();
+        boolean delKey = (boolean) map.get(DEL_KEY);
+
+        if (delKey) {
+            idempotentHandler.delIdempotentSign(key);
+        }
+        THREAD_CACHE.remove();
+    }
+
+    /**
+     * 获取用于幂等校验的 redis 存储的 key
      * 若没有配置 幂等 标识编号，则使用 url + 参数列表作为区分
-     *
      */
     private String getKey(JoinPoint joinPoint, HttpServletRequest request, Idempotent idempotent) {
         String key;
         // 若没有配置 幂等 标识编号，则使用 url + 参数列表作为区分
         if (!StringUtils.hasLength(idempotent.key())) {
-            String url = request.getRequestURL().toString();
+            String url = request.getRequestURI();
             String argString = Arrays.asList(joinPoint.getArgs()).toString();
             key = url + argString;
         } else {
@@ -123,25 +134,5 @@ public class IdempotentAspect {
         return key;
     }
 
-    @After("pointCut()")
-    public void afterPointCut(JoinPoint joinPoint) {
-        Map<String, Object> map = THREAD_CACHE.get();
-        if (CollectionUtils.isEmpty(map)) {
-            return;
-        }
 
-        RMapCache<Object, Object> mapCache = redissonClient.getMapCache(REDIS_MAP_CACHE_KEY);
-        if (mapCache.size() == 0) {
-            return;
-        }
-
-        String key = map.get(KEY).toString();
-        boolean delKey = (boolean) map.get(DEL_KEY);
-
-        if (delKey) {
-            mapCache.fastRemove(key);
-            log.info("[idempotent]:has removed key={}", key);
-        }
-        THREAD_CACHE.remove();
-    }
 }

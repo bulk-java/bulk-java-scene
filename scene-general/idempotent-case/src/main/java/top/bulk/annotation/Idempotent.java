@@ -31,7 +31,7 @@ public @interface Idempotent {
     int expireTime() default 1;
 
     /**
-     * 时间单位 默认：s
+     * 时间单位 默认：秒
      *
      * @return TimeUnit
      */

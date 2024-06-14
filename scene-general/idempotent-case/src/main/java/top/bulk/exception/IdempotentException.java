@@ -2,6 +2,7 @@ package top.bulk.exception;
 
 /**
  * 不满足幂等要求后抛出的注解
+ * 方便后期做全局异常处理
  *
  * @author 散装java
  * @date 2024-06-13
