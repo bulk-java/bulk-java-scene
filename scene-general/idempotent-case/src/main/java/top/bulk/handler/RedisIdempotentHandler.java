@@ -26,8 +26,7 @@ public class RedisIdempotentHandler implements IdempotentHandler {
     private RedissonClient redissonClient;
 
     @Override
-    public boolean isIdempotent(String key, long llt, TimeUnit ttlUnit) {
-        log.info("{}执行操作",Thread.currentThread().getName());
+    public boolean saveIdempotentSign(String key, long llt, TimeUnit ttlUnit) {
         // 借助于 RMapCache 来实现操作，不需要判断 rMapCache 是否为空
         RMapCache<String, Object> rMapCache = redissonClient.getMapCache(REDIS_MAP_CACHE_KEY);
         // 以当前时间作为 value,可读性更好一些
@@ -43,7 +42,8 @@ public class RedisIdempotentHandler implements IdempotentHandler {
             if (null != v1) {
                 return false;
             } else {
-                log.info("[isIdempotent]:记录成功 key={},value={},expireTime={}{}", key, value, llt, ttlUnit);
+                log.info("[saveIdempotentSign]:记录成功 key={},value={},expireTime={}{},now:{}",
+                        key, value, llt, ttlUnit, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
             }
         }
 
@@ -59,12 +59,12 @@ public class RedisIdempotentHandler implements IdempotentHandler {
     @Override
     public boolean delIdempotentSign(String key) {
         RMapCache<Object, Object> mapCache = redissonClient.getMapCache(REDIS_MAP_CACHE_KEY);
-        if (mapCache.size() == 0) {
+        if (mapCache.isEmpty()) {
             return false;
         }
         // 如果 obj == null 说明要删除的key不存在
         Object obj = mapCache.remove(key);
-        log.info("[delIdempotentSign]:key={},obj={},now:{}", key, obj,System.currentTimeMillis());
+        log.info("[delIdempotentSign]:key={},obj={},now:{}", key, obj, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
         return obj != null;
     }
 }

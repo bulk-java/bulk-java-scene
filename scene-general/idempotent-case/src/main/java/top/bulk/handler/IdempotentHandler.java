@@ -10,14 +10,14 @@ import java.util.concurrent.TimeUnit;
  */
 public interface IdempotentHandler {
     /**
-     * 判断当前 key 是否满足幂等
+     * 保存幂等标识，如果保存失败则返回false
      *
      * @param key     key
      * @param llt     过期时间
      * @param ttlUnit 时间单位
      * @return true and false
      */
-    boolean isIdempotent(String key, long llt, TimeUnit ttlUnit);
+    boolean saveIdempotentSign(String key, long llt, TimeUnit ttlUnit);
 
     /**
      * 删除当前key

@@ -1,11 +1,13 @@
-# 幂等
+# 幂等场景演示
 
 演示了几种幂等方式
 
-1. 基于 token 的幂等
-2. 基于业务唯一键的幂等
-3. 基于注解实现幂等 `top.bulk.controller.OrderController#order`
+1. 基于 token 的幂等 `top.bulk.controller.OrderController#orderWithToken`
+2. 基于业务唯一键的幂等(注解实现)
+   - 自定义唯一键(支持 Spring el 表达式) `top.bulk.controller.OrderController#order`
+   - 不指定唯一键(默认根据 uri + 接口入参 生成唯一键) `top.bulk.controller.OrderController#noKey`
 
+![](./img/idempotent.png)
 ### 什么是幂等
 
 在程序开发中，简单来说，就是对一个接口执行重复的多次请求，与一次请求所产生的结果是相同的

@@ -7,8 +7,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.redisson.api.RMapCache;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -23,8 +21,6 @@ import top.bulk.handler.IdempotentHandler;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +50,9 @@ public class IdempotentAspect {
 
     @Resource
     IdempotentHandler idempotentHandler;
-
+    /**
+     * 切点
+     */
     @Pointcut("@annotation(top.bulk.annotation.Idempotent)")
     public void pointCut() {
     }
@@ -83,7 +81,7 @@ public class IdempotentAspect {
         boolean delKey = idempotent.delKey();
 
         // 如果不满足幂等校验，则直接抛出异常
-        if (!idempotentHandler.isIdempotent(key, expireTime, timeUnit)) {
+        if (!idempotentHandler.saveIdempotentSign(key, expireTime, timeUnit)) {
             throw new IdempotentException(info);
         }
 
