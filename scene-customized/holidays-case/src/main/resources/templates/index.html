@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>节假日</title>
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet"/>
+    <style>
+        @font-face {
+            font-family: "pix";
+            src: url("DottedSongtiSquareRegular.otf");
+        }
+
+        html, body, pre, code, kbd, samp {
+            font-family: "pix";
+            font-weight: bold;
+            font-size: 35px;
+        }
+    </style>
+</head>
+<style>
+    .showContext {
+        text-align: center;
+        margin: 50px auto;
+        width: 50%;
+    }
+</style>
+<body>
+<div style="display: flex">
+    <div class="nes-balloon from-left nes-pointer showContext ">
+        <i class="nes-bulbasaur"></i>
+        <p class="title">@散装java</p>
+        <div>
+            当前时间是<span id="time"></span>
+            <div data-th-each="item:${nextHolidays}">
+                <div>
+                    <i class="nes-icon is-large star"></i>
+                    距离 <span data-th-text="${item.date}"></span>
+                    <span data-th-text="${item.name}"></span>
+                    还有 <span data-th-text="${item.days}"></span> 天
+                </div>
+            </div>
+        </div>
+        <br/>
+        <progress class="nes-progress is-pattern" value="100" max="100"></progress>
+    </div>
+</div>
+
+</body>
+
+<script>
+    function getTime() {
+        let date = new Date()
+        let dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        document.getElementById("time").innerText = dateStr
+    }
+
+    getTime()
+
+    function time() {
+        window.setTimeout(() => {
+            getTime()
+            time()
+        }, 1000)
+    }
+
+    time()
+</script>
+</html>

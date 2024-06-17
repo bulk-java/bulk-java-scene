@@ -21,6 +21,7 @@
     <modules>
         <module>big-file-upload</module>
         <module>ip-to-address</module>
+        <module>holidays-case</module>
     </modules>
 
 </project>
