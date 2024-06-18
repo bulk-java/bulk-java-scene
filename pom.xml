@@ -11,6 +11,7 @@
         <module>scene-customized</module>
         <module>design-patterns</module>
         <module>java8-use</module>
+        <module>scene-general/log-trace-mdc</module>
     </modules>
     <packaging>pom</packaging>
 
