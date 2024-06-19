@@ -1,6 +1,7 @@
 package top.bulk.mdc.util;
 
 import org.slf4j.MDC;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.UUID;
@@ -26,56 +27,21 @@ public class MdcUtil {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
-    public static void setTraceIdIfAbsent() {
-        if (MDC.get(TRACE_ID) == null) {
-            MDC.put(TRACE_ID, generateTraceId());
+    /**
+     * 将 traceId 存储到 MDC 中去
+     *
+     * @param tid 链路追踪号
+     */
+    public static void put(String tid) {
+        if (StringUtils.hasText(tid)) {
+            MDC.put(TRACE_ID, tid);
         }
     }
 
     /**
-     * 用于父线程向线程池中提交任务时，将自身MDC中的数据复制给子线程
-     *
-     * @param callable
-     * @param context
-     * @param <T>
-     * @return
+     * 从 MDC 中移除 traceId
      */
-    public static <T> Callable<T> wrap(final Callable<T> callable, final Map<String, String> context) {
-        return () -> {
-            if (context == null) {
-                MDC.clear();
-            } else {
-                MDC.setContextMap(context);
-            }
-            setTraceIdIfAbsent();
-            try {
-                return callable.call();
-            } finally {
-                MDC.clear();
-            }
-        };
-    }
-
-    /**
-     * 用于父线程向线程池中提交任务时，将自身MDC中的数据复制给子线程
-     *
-     * @param runnable
-     * @param context
-     * @return
-     */
-    public static Runnable wrap(final Runnable runnable, final Map<String, String> context) {
-        return () -> {
-            if (context == null) {
-                MDC.clear();
-            } else {
-                MDC.setContextMap(context);
-            }
-            setTraceIdIfAbsent();
-            try {
-                runnable.run();
-            } finally {
-                MDC.clear();
-            }
-        };
+    public static void remove() {
+        MDC.remove(TRACE_ID);
     }
 }
