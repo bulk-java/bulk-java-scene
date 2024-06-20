@@ -2,6 +2,7 @@ package top.bulk.mdc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 基于 mdc 实现  日志的链路追踪能力
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2024-06-18
  */
 @SpringBootApplication
+@EnableScheduling
 public class LogTraceMdcApplication {
     public static void main(String[] args) {
         SpringApplication.run(LogTraceMdcApplication.class, args);

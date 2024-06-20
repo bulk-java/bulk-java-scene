@@ -22,5 +22,7 @@
 
     <modules>
         <module>idempotent-case</module>
+        <module>log-trace-mdc</module>
+        <module>log-sensitive-masking</module>
     </modules>
 </project>

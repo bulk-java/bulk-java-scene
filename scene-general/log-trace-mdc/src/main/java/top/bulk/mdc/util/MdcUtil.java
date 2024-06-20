@@ -27,6 +27,11 @@ public class MdcUtil {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
+    public static void setTraceIdIfAbsent() {
+        if (MDC.get(TRACE_ID) == null) {
+            MDC.put(TRACE_ID, generateTraceId());
+        }
+    }
     /**
      * 将 traceId 存储到 MDC 中去
      *

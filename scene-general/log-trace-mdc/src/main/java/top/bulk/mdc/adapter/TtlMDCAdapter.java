@@ -12,7 +12,7 @@ import java.util.Set;
  * 基于 ttl 实现 MDC
  * 整个实现，参考 LogbackMDCAdapter ，只是替换了其中的 ThreadLocal。使其支持多线程件的 MDC 使用
  *
- * @author shixiaodong
+ * @author 散装java
  * @date 2024-06-19
  */
 @SuppressWarnings("all")

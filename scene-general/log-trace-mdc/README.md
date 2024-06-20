@@ -1,6 +1,6 @@
 # SpringBoot 中 基于 MDC 实现日志的链路追踪
 
-本示例 演示的是 Slf4j MDC + TTL (TransmittableThreadLocal) 自定义实现链路追踪能力
+本示例 演示的是 Slf4j MDC + Lockback + TTL (TransmittableThreadLocal) 自定义实现链路追踪能力
 
 ### 链路追踪能解决什么问题
 

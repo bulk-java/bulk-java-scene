@@ -9,7 +9,7 @@ import top.bulk.mdc.adapter.TtlMDCAdapter;
  * <p>
  * 然后重写 getMDCA 的返回值，即可实现使用自己的 MDC
  *
- * @author shixiaodong
+ * @author 散装java
  * @date 2024-06-19
  */
 @SuppressWarnings("all")
