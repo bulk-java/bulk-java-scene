@@ -50,5 +50,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!--日志脱敏包，大佬写好了其中中的脱敏规则，开箱即用-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-logback</artifactId>
+            <version>1.7.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -3,34 +3,25 @@
     <!--日志存储路径-->
     <property name="log" value="D:/test/log"/>
     <!-- 基于 converter -->
-    <conversionRule conversionWord="sensitive" converterClass="top.bulk.masking.config.MaskingConverter" />
-    <!-- 控制台输出 -->
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <conversionRule conversionWord="sensitive" converterClass="top.bulk.masking.config.converter.SensitiveMaskingConverter" />
+    <!-- 控制台输出 使用 converter,  注意 pattern 中的写法 %sensitive-->
+    <appender name="consoleConverter" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--输出格式化 这里输出后的内容 sensitive 格式化后的-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %sensitive%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %sensitive%n</pattern>
         </encoder>
     </appender>
-    <!-- 按天生成日志文件 -->
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--日志文件名-->
-            <FileNamePattern>${log}/%d{yyyy-MM-dd}.log</FileNamePattern>
-            <!--保留天数-->
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
-        </encoder>
-        <!--日志文件最大的大小-->
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>10MB</MaxFileSize>
-        </triggeringPolicy>
+
+    <!-- 使用 layout -->
+    <appender name="consoleLayout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="top.bulk.masking.config.layout.SensitiveMaskingLayout">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </layout>
     </appender>
 
     <!-- 日志输出级别 -->
     <root level="INFO">
-        <appender-ref ref="console"/>
-        <appender-ref ref="file"/>
+        <!--<appender-ref ref="consoleConverter"/>-->
+        <appender-ref ref="consoleLayout"/>
     </root>
 </configuration>

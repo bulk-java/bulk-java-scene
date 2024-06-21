@@ -1,5 +1,6 @@
 package top.bulk.masking;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,8 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2024-06-20
  */
 @SpringBootApplication
-public class LogDesensitizedApplication {
+@Slf4j
+public class LogSensitiveMaskingApplication {
     public static void main(String[] args) {
-        SpringApplication.run(LogDesensitizedApplication.class);
+        SpringApplication.run(LogSensitiveMaskingApplication.class);
+        log.info("tel:{},手机号:{},身份证{}", "13000000000", "13000000000", "370681199922222222");
     }
 }
