@@ -26,7 +26,9 @@ public class LocalHolidayServiceImpl implements HolidayService {
     @Override
     public HolidayResult getHoliday() {
         log.info("基于本地实现====>");
-        File file = FileUtil.file(System.getProperty("user.dir") + "/data/2022.json");
+        // 多模块下 要想生效，需要这么配置
+        // 在Run-Run/Debug Configurations里，调整Work directory为$MODULE_WORKING_DIR$，然后保存
+        File file = FileUtil.file(System.getProperty("user.dir") + "/data/2024.json");
         JSON json = JSONUtil.readJSON(file, Charset.defaultCharset());
         return json.toBean(HolidayResult.class);
     }

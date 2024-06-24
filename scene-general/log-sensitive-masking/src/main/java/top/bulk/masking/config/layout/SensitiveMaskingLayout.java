@@ -7,7 +7,7 @@ import com.github.houbb.chars.scan.util.CharsScanPropertyHelper;
 /**
  * 基于 Layout 的方式去进行脱敏类
  *
- * @author shixiaodong
+ * @author 散装java
  * @date 2024-06-21
  */
 public class SensitiveMaskingLayout extends PatternLayout {
