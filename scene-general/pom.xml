@@ -25,5 +25,6 @@
         <module>log-trace-mdc</module>
         <module>log-sensitive-masking</module>
         <module>ratelimit-case</module>
+        <module>log-interface-save</module>
     </modules>
 </project>

@@ -2,20 +2,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>scene-general</artifactId>
         <groupId>top.bulk</groupId>
+        <artifactId>scene-general</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>log-sensitive-masking</artifactId>
-    <description>log 打印的时候，对于敏感数据脱敏</description>
+    <artifactId>log-interface-save</artifactId>
+
+    <description>接口日志记录演示</description>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>2.7.18</spring-boot.version>
+
     </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -51,11 +56,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!--日志脱敏包，大佬写好了其中中的脱敏规则，开箱即用-->
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>sensitive-logback</artifactId>
-            <version>1.7.0</version>
-        </dependency>
     </dependencies>
+
 </project>
