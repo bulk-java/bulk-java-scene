@@ -12,5 +12,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum RateLimiterEnum {
-    SLIDING_WINDOW,;
+    FIXED_WINDOW,
+    FIXED_WINDOW_LUA,
+    SLIDING_WINDOW,
+    LEAKY_BUCKET,
+    TOKEN_BUCKET,
+    ;
 }

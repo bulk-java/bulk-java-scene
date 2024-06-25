@@ -1,8 +1,10 @@
 package top.bulk.ratelimit.annotation;
 
 import org.springframework.core.annotation.AliasFor;
+import top.bulk.ratelimit.constant.KeyStrategyEnum;
 import top.bulk.ratelimit.constant.RateLimiterEnum;
 
+import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -11,8 +13,21 @@ import java.util.concurrent.TimeUnit;
  * @author 散装java
  * @date 2024-06-24
  */
+@Inherited
+@Target(ElementType.METHOD)
+@Retention(value = RetentionPolicy.RUNTIME)
 public @interface RateLimiter {
     int DEFAULT_LIMIT = 10;
+
+    /**
+     * 限流key
+     */
+    String key() default "";
+
+    /**
+     * 限流 key 生成策略
+     */
+    KeyStrategyEnum keyStrategy() default KeyStrategyEnum.IP;
 
     /**
      * max 最大请求数
@@ -25,17 +40,12 @@ public @interface RateLimiter {
     @AliasFor("value") long max() default DEFAULT_LIMIT;
 
     /**
-     * 限流key
+     * 限流时间 - 允许请求的时间间隔，默认1分钟
      */
-    String key() default "";
+    long time() default 60;
 
     /**
-     * 超时时长，默认1分钟
-     */
-    long timeout() default 60;
-
-    /**
-     * 超时时间单位，默认 秒
+     * 允许求情的时间间隔，默认 秒
      */
     TimeUnit timeUnit() default TimeUnit.SECONDS;
 
