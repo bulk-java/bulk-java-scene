@@ -36,19 +36,16 @@ public class LeakyBucketRateLimiterHandler implements RateLimiterHandler {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     /**
-     * 桶的大小
-     */
-    private Long bucketSize;
-    /**
      * 漏水速率，单位:个/秒
+     * 这个值，应该是可配置的
      */
-    private Long leakRate;
+    private final Long leakRate = 1L;
 
 
     @PostConstruct
     public void init() {
-        // 定期执行 漏水方法
-        executorService.scheduleAtFixedRate(this::leakWater, 0, 1, TimeUnit.SECONDS);
+        // 定期执行 漏水方法 ，这里设置的漏水为1s
+        executorService.scheduleAtFixedRate(this::leakWater, 0, leakRate, TimeUnit.SECONDS);
     }
 
     @Override
@@ -59,14 +56,13 @@ public class LeakyBucketRateLimiterHandler implements RateLimiterHandler {
             rLock.lock(100, TimeUnit.MILLISECONDS);
             String redisKey = KEY_PREFIX + key;
             RScoredSortedSet<Long> bucket = redissonClient.getScoredSortedSet(redisKey);
-            //这里用一个set，来存储所有path
+            // 存储所有的桶，方便漏水
             RSet<String> pathSet = redissonClient.getSet(LEAK_WATER_KEY);
-            pathSet.add(key);
-            // 获取当前时间
+            pathSet.add(redisKey);
+
             long now = System.currentTimeMillis();
-            // 检查桶是否已满
-            if (bucket.size() < bucketSize) {
-                // 桶未满，添加一个元素到桶中
+            // 检查桶是否已满，桶未满，添加一个元素到桶中，满了则说明限流了
+            if (bucket.size() < max) {
                 bucket.add(now, now);
                 return false;
             }

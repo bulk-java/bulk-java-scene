@@ -18,7 +18,7 @@ import org.springframework.scripting.support.ResourceScriptSource;
 public class RedisConfig {
     /**
      * 此处有坑，一定要定义一个自己的 redisTemplate
-     * 不然会走到 redission 定义的，这样执行 lua 脚本会有点问题
+     * 不然会走到 redisson 定义的，这样执行 lua 脚本会有点问题
      */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {

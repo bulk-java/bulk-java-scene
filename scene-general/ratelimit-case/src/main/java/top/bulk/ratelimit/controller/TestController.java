@@ -32,4 +32,25 @@ public class TestController {
         log.info("测试固定窗口限流-lua脚本方式，t2:{}", LocalDateTime.now());
         return "ok";
     }
+
+    @GetMapping("t3")
+    @RateLimiter(max = 5, time = 10, strategy = RateLimiterEnum.FIXED_WINDOW)
+    public String test3() {
+        log.info("测试固定窗口限流-redisson方式，t3:{}", LocalDateTime.now());
+        return "ok";
+    }
+
+    @GetMapping("t4")
+    @RateLimiter(max = 5, time = 10, strategy = RateLimiterEnum.SLIDING_WINDOW)
+    public String t4() {
+        log.info("测试滑动窗口限流-redisson方式，t3:{}", LocalDateTime.now());
+        return "ok";
+    }
+
+    @GetMapping("t5")
+    @RateLimiter(max = 5, time = 10, strategy = RateLimiterEnum.LEAKY_BUCKET)
+    public String t5() {
+        log.info("测试漏桶算法限流-redisson方式，t3:{}", LocalDateTime.now());
+        return "ok";
+    }
 }

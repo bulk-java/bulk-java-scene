@@ -12,10 +12,25 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum RateLimiterEnum {
+    /**
+     * 固定窗口
+     */
     FIXED_WINDOW,
+    /**
+     * 固定窗口 lua 脚本实现
+     */
     FIXED_WINDOW_LUA,
+    /**
+     * 滑动窗口实现
+     */
     SLIDING_WINDOW,
+    /**
+     * 漏桶算法
+     */
     LEAKY_BUCKET,
+    /**
+     * 令牌桶
+     */
     TOKEN_BUCKET,
     ;
 }

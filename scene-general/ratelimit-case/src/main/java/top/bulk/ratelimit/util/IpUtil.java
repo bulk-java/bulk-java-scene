@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2024-06-25
  */
 public class IpUtil {
+    private static final String LOCAL_REMOTE_HOST = "0:0:0:0:0:0:0:1";
     /**
      * 获取ip
      *
@@ -22,6 +23,7 @@ public class IpUtil {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         assert requestAttributes != null;
         HttpServletRequest request = requestAttributes.getRequest();
-        return ServletUtil.getClientIP(request);
+        String remoteHost = ServletUtil.getClientIP(request);
+        return LOCAL_REMOTE_HOST.equals(remoteHost) ? "127.0.0.1" : remoteHost;
     }
 }

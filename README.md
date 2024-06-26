@@ -28,6 +28,8 @@
 | [幂等场景演示](./scene-general/idempotent-case) | 基于 redis 实现幂等，含自定义注解实现幂等，基于token实现幂等 |
 | [MDC+Lockback+TTL链路追踪演示](./scene-general/log-trace-mdc) | Slf4j MDC + Lockback + TTL (阿里 TransmittableThreadLocal) 自定义实现链路追踪能力 |
 | [logback 日志脱敏](./scene-general/log-sensitive-masking) | Springboot + logback 演示日志脱敏，Converter、Layout两种方式 |
+| [限流场景演示](./scene-general/ratelimit-case) | Springboot + redis 演示多种分布式限流方式，自定义注解。支持固定窗口、滑动窗口、漏桶、令牌桶。基于lua脚本，以及基于 redisson 等多种方式 |
+| [自定义注解记录接口访问日志](./scene-general/log-interface-save) | 一个注解可以实现记录项目中任意接口的访问数据(入参、反参、耗时等)到数据库或者其他地方 |
 
 ### 设计模式在实际业务开发中的应用
 
