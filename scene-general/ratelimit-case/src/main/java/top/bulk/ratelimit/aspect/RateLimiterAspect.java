@@ -53,7 +53,7 @@ public class RateLimiterAspect {
 
         if (limit) {
             // 实际项目中要对异常做处理，这里只是为了方便观察结果
-            throw new RuntimeException("限流:访问次数过多！" + strategy.name());
+            throw new RuntimeException(rateLimiter.msg() + strategy.name());
         }
     }
 }

@@ -29,8 +29,16 @@ public enum RateLimiterEnum {
      */
     LEAKY_BUCKET,
     /**
+     * 漏桶算法 - lua 实现
+     */
+    LEAKY_BUCKET_LUA,
+    /**
      * 令牌桶
      */
     TOKEN_BUCKET,
+    /**
+     * 令牌桶 - lua 实现
+     */
+    TOKEN_BUCKET_LUA,
     ;
 }

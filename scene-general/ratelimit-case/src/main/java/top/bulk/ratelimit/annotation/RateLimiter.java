@@ -54,4 +54,9 @@ public @interface RateLimiter {
      */
     RateLimiterEnum strategy() default RateLimiterEnum.SLIDING_WINDOW;
 
+    /**
+     * 默认限流文案，如果需要国际化，要考虑国际化问题
+     */
+    String msg() default "限流:访问次数过多！";
+
 }

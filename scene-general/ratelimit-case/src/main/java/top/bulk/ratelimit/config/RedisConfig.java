@@ -19,8 +19,9 @@ public class RedisConfig {
     /**
      * 此处有坑，一定要定义一个自己的 redisTemplate
      * 不然会走到 redisson 定义的，这样执行 lua 脚本会有点问题
+     * todo 解决 和 redisson 公用一个 redisTemplate
      */
-    @Bean
+    // @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
@@ -43,10 +44,30 @@ public class RedisConfig {
     }
 
     @Bean
-    public DefaultRedisScript<Long> slidingWindowRateLimiter() {
+    public DefaultRedisScript<Long> slidingWindowRateLimiterLua() {
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
         // 指定 lua 脚本 - 滑动窗口
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/slidingWindowRateLimiter.lua")));
+        // 指定返回值类型
+        redisScript.setResultType(Long.class);
+        return redisScript;
+    }
+
+    @Bean
+    public DefaultRedisScript<Long> leakyBucketRetaLimiterLua() {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        // 指定 lua 脚本 - 漏桶算法
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/leakyBucketRetaLimiter.lua")));
+        // 指定返回值类型
+        redisScript.setResultType(Long.class);
+        return redisScript;
+    }
+
+    @Bean
+    public DefaultRedisScript<Long> tokenBucketRateLimiterLua() {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        // 指定 lua 脚本 - 令牌桶算法
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/tokenBucketRateLimiter.lua")));
         // 指定返回值类型
         redisScript.setResultType(Long.class);
         return redisScript;

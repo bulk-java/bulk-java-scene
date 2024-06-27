@@ -20,8 +20,10 @@ public interface RateLimiterConst {
      * 基于漏桶算法实现
      */
     String LEAKY_BUCKET = "LEAKY_BUCKET";
+    String LEAKY_BUCKET_LUA = "LEAKY_BUCKET_LUA";
     /**
      * 基于令牌桶实现
      */
     String TOKEN_BUCKET = "TOKEN_BUCKET";
+    String TOKEN_BUCKET_LUA = "TOKEN_BUCKET_LUA";
 }
